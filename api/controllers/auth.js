@@ -10,6 +10,7 @@ router.post('/login',
         authService.login(req.body)
             .then(({ token, userData }) => {
                 res.cookie(COOKIE_NAME, token, { httpOnly: true })
+                res.send(userData)
             })
             .catch(next)
     })
