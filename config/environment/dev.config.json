@@ -1,0 +1,19 @@
+{
+    "server" : {
+        "PORT": 3000,
+        "CORS": {
+            "urls": [ "http://localhost:42000" ],
+            "credentials": true,
+            "exposedHeaders": []
+        }
+    },
+    "database": {
+        "DB_URI": "mongodb://127.0.0.1:27017/",
+        "DB_NAME": "courier" 
+    },
+    "security": {
+        "SECRET": "TOP_SECRET",
+        "COOKIE_NAME": "auth_cookie",
+        "SALT_ROUNDS": 10
+    }
+}
