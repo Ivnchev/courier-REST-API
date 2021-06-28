@@ -8,7 +8,7 @@ module.exports.parseUserData = function (req, res, next) {
             password,
             repeatPassword: req.body.repeatPassword,
             email: req.body.email,
-            phone: req.body.phone
+            role: req.body.role
         }
     next()
 }

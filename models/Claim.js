@@ -9,12 +9,13 @@ const claimSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true
+        required: [true, 'Title is required!'],
+        minLength: [5, 'Title must be at least 5 characters !']
     },
     description: {
         type: String,
-        required: true,
-        minlength: 10
+        required: [true, 'Description is required!'],
+        minLength: [10, 'Description must be at least 10 characters !']
     }
 
 })

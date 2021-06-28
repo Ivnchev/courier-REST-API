@@ -4,6 +4,12 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const { server: { CORS } } = require('../config/environment')
 
+function logger(req,res,next) {
+    console.log('>>>', 'METHOD: ' + req.method , 'PATH: ' + req.url);
+    next()
+}
+
+
 module.exports = function (app) {
 
     app.use(express.urlencoded({ extended: true }))
@@ -15,5 +21,6 @@ module.exports = function (app) {
     app.use(bodyParser.json());
     app.use(cookieParser())
 
+    app.use(logger)
 
 }

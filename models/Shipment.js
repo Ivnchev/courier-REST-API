@@ -8,20 +8,27 @@ const shipmentSchema = new mongoose.Schema({
     },
     destination: {
         type: String,
-        required: true
+        required: [true, 'Destination is required!'],
+        minLength: [4, 'Destination must be at least 4 characters !']
     },
-    packageType: {
+    shipmentType: {
         type: String,
         default: 'economy',
-        required: true
+        required: [true, 'Shipment Type is required!'],
+        enum: {
+            values: ['economy', 'express'],
+            message: '{VALUE} is incorrect!'
+        }
     },
     packageAddress: {
         type: String,
-        required: true
+        required: [true, 'Package Address is required!'],
+        minLength: [10, 'Package Address must be at least 10 characters !']
     },
     price: {
         type: Number,
-        required: true
+        required: [true, 'Price is required!'],
+        min: [1, 'Price should be at least 1$ !']
     }
 })
 

@@ -10,7 +10,7 @@ router.post('/login',
         authService.login(req.body)
             .then(({ token, userData }) => {
                 res.cookie(COOKIE_NAME, token, { httpOnly: true })
-                res.send(userData)
+                res.json(userData)
             })
             .catch(next)
     })
@@ -23,16 +23,16 @@ router.post('/register',
         }
         
         authService.register(req.body)
-            .then(() => {
+            .then((data) => {
                 res.status(200)
-                    .send('Successful registration!')
+                    .json(data)
             })
             .catch(next)
     }
 )
 router.get('/logout', function (req, res, next) {
 
-        authService.logout(req, res)
+        authService.logout(req)
             .then(() => {
                 res.status(200)
                     .send('Successful logout!')
