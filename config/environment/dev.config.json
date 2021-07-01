@@ -2,7 +2,7 @@
     "server" : {
         "PORT": 3000,
         "CORS": {
-            "urls": [ "http://localhost:42000" ],
+            "urls": [ "http://localhost:4200" ],
             "credentials": true,
             "exposedHeaders": []
         }
@@ -14,6 +14,7 @@
     "security": {
         "SECRET": "TOP_SECRET",
         "COOKIE_NAME": "auth_cookie",
+        "HEADER": "x-auth",
         "SALT_ROUNDS": 10
     }
 }
