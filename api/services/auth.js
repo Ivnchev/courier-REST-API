@@ -1,21 +1,31 @@
 const User = require('../../models/User')
 const jwt = require('jsonwebtoken')
-const { security: { SECRET } } = require('../../config/environment')
+const { security: { SECRET, HEADER, COOKIE_NAME } } = require('../../config/environment')
 
-const register = async function ({ username, password, email, role }) {
+const register = async function ({ username, password, email, role, gender, image }) {
 
-    const user = await User.findOne({ username: username, email: email })
+    const findUser = await User.findOne({ username: username, email: email })
 
-    if (user) throw { errors: [{ message: 'There is a user registered with that email!', status: 204 }] }
+    if (findUser) throw { errors: [{ message: 'There is a user registered with that email!', status: 204 }] }
 
-    const data = await User.create({ username, password, email, role })
+    const data = await User.create({ username, password, email, role, gender, image })
 
     if (!data) throw { errors: [{ message: 'Invalid username or password!', status: 204 }] }
 
-    return login(username, password)
+    const user = {
+        _id: data._id,
+        username: data.username,
+        email: data.email,
+        image: data.image,
+        role: data.role
+    }
+
+    const token = jwt.sign(user, SECRET)
+
+    return { ...user, token }
 }
 
-const login = async function (username, password) {
+const login = async function ({ username, password }) {
     const data = await User.findOne({ username })
 
     if (!data) throw { errors: [{ message: 'Invalid username or password!', status: 204 }] }
@@ -28,29 +38,45 @@ const login = async function (username, password) {
         _id: data._id,
         username: data.username,
         email: data.email,
+        image: data.image,
         role: data.role
     }
 
     const token = jwt.sign(user, SECRET)
 
-    return { token, user }
+    return { ...user, token }
 }
 
-const logout = async function (req) {
+const logout = async function (req, res) {
 
     const isLogout = new Promise((resolve, reject) => {
-        const cookie = req.cookies[COOKIE_NAME] || null
-        if (cookie) {
-            return resolve(cookie)
+        const token = req.cookies[COOKIE_NAME] || req.headers[HEADER] || null
+        if (token) {
+            res.clearCookie(COOKIE_NAME)
+            return resolve(token)
         }
-        return reject(cookie)
+        return reject(token)
     })
-
     return isLogout
 
 }
 
+const user = async function (req) {
+    const data = await User.findOne({ _id: req.user?._id })
+
+    if (!data) throw { errors: [{ message: 'No such user!', status: 204 }] }
+    const user = {
+        _id: data._id,
+        username: data.username,
+        email: data.email,
+        image: data.image,
+        role: data.role
+    }
+    return user
+}
+
 module.exports = {
+    user,
     register,
     login,
     logout
