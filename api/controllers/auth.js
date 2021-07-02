@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const authService = require('../services/auth')
+const authService = require('../services/auth.service')
 const middleware = require('../middlewares/user-data')
 const { security: { COOKIE_NAME } } = require('../../config/environment')
 
