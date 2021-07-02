@@ -12,12 +12,10 @@ const schema = new mongoose.Schema({
         required: [true, 'Description is required!'],
         minLength: [10, 'Description must be at least 10 characters !']
     },
-    imageUrl: {
-        type: String,
-        required: [true, 'Image is required!'],
-        match: [/^https?:\/\//, 'Image URL is incorrect!']
+    showDetails: {
+        type: Boolean,
+        default: false
     }
-
 })
 
 

@@ -2,14 +2,10 @@ const mongoose = require('mongoose')
 
 
 const schema = new mongoose.Schema({
-    user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'user'
-    },
-    destination: {
+    address: {
         type: String,
         required: [true, 'Destination is required!'],
-        minLength: [4, 'Destination must be at least 4 characters !']
+        minLength: [10, 'Destination must be at least 10 characters !']
     },
     shipmentType: {
         type: String,
@@ -20,16 +16,26 @@ const schema = new mongoose.Schema({
             message: '{VALUE} is incorrect!'
         }
     },
-    packageAddress: {
+    size: {
         type: String,
-        required: [true, 'Package Address is required!'],
-        minLength: [10, 'Package Address must be at least 10 characters !']
+        required: [true, 'Package size is required!'],
+        match: [/\d{2,3}\/\d{2,3}\/\d{2,3}/, 'Package size should looks like 120/80/40!'],
     },
-    price: {
+    weight: {
+        type: Number,
+        required: [true, 'Shipment weight is required!'],
+        min: [1, 'Shipment weight should be greater than 1kg!'],
+        max: [100, 'Shipment weight should be less than 100kg!'],
+    },
+    cost: {
         type: Number,
         required: [true, 'Price is required!'],
-        min: [1, 'Price should be at least 1$ !']
-    }
+        min: [20, 'Price should be at least 20$ !']
+    },
+    creator: {
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
+    },
 })
 
 
