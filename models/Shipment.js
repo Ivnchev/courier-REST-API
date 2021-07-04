@@ -24,7 +24,7 @@ const schema = new mongoose.Schema({
     weight: {
         type: Number,
         required: [true, 'Shipment weight is required!'],
-        min: [1, 'Shipment weight should be greater than 1kg!'],
+        min: [2, 'Shipment weight should be greater than 2kg!'],
         max: [100, 'Shipment weight should be less than 100kg!'],
     },
     cost: {
