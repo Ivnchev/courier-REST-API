@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 
 
 const schema = new mongoose.Schema({
-    user: {
+    trackingNumber: {
         type: mongoose.Types.ObjectId,
-        ref: 'user'
+        ref: 'shipment'
     },
     title: {
         type: String,
@@ -16,6 +16,18 @@ const schema = new mongoose.Schema({
         type: String,
         required: [true, 'Description is required!'],
         minLength: [10, 'Description must be at least 10 characters !']
+    },
+    creator: {
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
+    },
+    showDetails: {
+        type: Boolean,
+        default: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 
 })
