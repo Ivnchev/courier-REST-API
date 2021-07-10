@@ -6,11 +6,11 @@ const register = async function ({ username, password, email, role, gender, imag
 
     const findUser = await User.findOne({ username: username, email: email })
 
-    if (findUser) throw { errors: [{ message: 'There is a user registered with that email!', status: 204 }] }
+    if (findUser) throw { message: 'Invalid username or password!', status: 404 } 
 
     const data = await User.create({ username, password, email, role, gender, image })
 
-    if (!data) throw { errors: [{ message: 'Invalid username or password!', status: 204 }] }
+    if (!data) throw { message: 'Invalid username or password!', status: 404 } 
 
     const user = {
         _id: data._id,
@@ -22,17 +22,17 @@ const register = async function ({ username, password, email, role, gender, imag
 
     const token = jwt.sign(user, SECRET)
 
-    return { ...user, token }
+    return { user, token }
 }
 
 const login = async function ({ username, password }) {
     const data = await User.findOne({ username })
 
-    if (!data) throw { errors: [{ message: 'Invalid username or password!', status: 204 }] }
+    if (!data) throw { message: 'Invalid username or password!', status: 404 } 
 
     const isCorrectPassword = await data.comparePasswords(password)
 
-    if (!isCorrectPassword) throw { errors: [{ message: 'Invalid username or password!', status: 204 }] }
+    if (!isCorrectPassword) throw { message: 'Invalid username or password!', status: 404 } 
 
     const user = {
         _id: data._id,
@@ -44,7 +44,7 @@ const login = async function ({ username, password }) {
 
     const token = jwt.sign(user, SECRET)
 
-    return { ...user, token }
+    return { user, token }
 }
 
 const logout = async function (req, res) {
@@ -62,17 +62,10 @@ const logout = async function (req, res) {
 }
 
 const user = async function (req) {
-    const data = await User.findOne({ _id: req.user?._id })
-
-    if (!data) throw { errors: [{ message: 'No such user!', status: 204 }] }
-    const user = {
-        _id: data._id,
-        username: data.username,
-        email: data.email,
-        image: data.image,
-        role: data.role
+    if(req.user){
+        return req.user
     }
-    return user
+    return undefined
 }
 
 module.exports = {

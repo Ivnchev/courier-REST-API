@@ -36,6 +36,18 @@ const schema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'user'
     },
+    status: {
+        type: String,
+        enum: {
+            values: ['created', 'transit', 'completed'],
+            message: '{VALUE} is incorrect!'
+        },
+        default: 'created'
+    },
+    showDetails: {
+        type: Boolean,
+        default: false
+    }
 })
 
 

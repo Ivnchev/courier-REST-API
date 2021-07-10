@@ -7,7 +7,8 @@ router.get('/user',
     function (req, res, next) {
         authService.user(req)
             .then((data) => {
-                res.json(data)
+                console.log(data);
+                res.status(200).json(data)
             })
             .catch(next)
     })
@@ -17,10 +18,13 @@ router.post('/login',
     function (req, res, next) {
         authService.login(req.body)
             .then((data) => {
-                res.cookie(COOKIE_NAME, data.token, { httpOnly: true })
-                res.status(200).json(data)
+                res.cookie(COOKIE_NAME, data.token, { httpOnly: true, maxAge: new Date(Date.now() + 900000) })
+                res.status(200).json(data.user)
             })
-            .catch(next)
+            .catch(err => {
+                console.log(err);
+                res.status(err.status).send(err.message)
+            })
     })
 
 router.post('/register',
@@ -33,10 +37,13 @@ router.post('/register',
 
         authService.register(req.body)
             .then((data) => {
-                res.cookie(COOKIE_NAME, data.token, { httpOnly: true })
-                res.status(200).json(data)
+                res.cookie(COOKIE_NAME, data.token, { httpOnly: true, maxAge: new Date(Date.now() + 900000) })
+                res.status(200).json(data.user)
             })
-            .catch(next)
+            .catch(err => {
+                console.log(err);
+                res.status(err.status).send(err.message)
+            })
     })
 
 router.post('/logout', function (req, res, next) {
