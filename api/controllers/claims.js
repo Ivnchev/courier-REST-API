@@ -37,7 +37,7 @@ router.route('/:id')
         .catch(next)
 })
 .delete(function (req, res, next) {
-    claimService.deleteClaim(req.params.id, req.user._id)
+    claimService.deleteClaim(req.params.id, req.user._id, req.user.role)
         .then(data => {
             res.status(200).json(data)
         }).catch(next)

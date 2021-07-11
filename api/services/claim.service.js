@@ -29,9 +29,15 @@ const postClaim = async (rowData, userId) => {
     return data
 }
 
-const deleteClaim = async (id, userId) => {
+const deleteClaim = async (id, userId, role) => {
 
-    const user = await userModel.findByIdAndUpdate({ _id: userId }, { $pull: { claims: id } }, { runValidators: true })
+    const claim = await claimModel.findById(id).populate('creator')
+
+    if (!claim) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
+
+    if((claim.creator._id.toString() !== userId) && role !== 'admin' ) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
+
+    const user = await userModel.findByIdAndUpdate({ _id: claim.creator._id }, { $pull: { claims: id } }, { runValidators: true })
 
     if (!user) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
 
