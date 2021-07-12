@@ -15,7 +15,8 @@ router.route('/')
         const data = {
             ...req.body,
             cost: req.body.shipmentType == 'economy' ? 20 : 40,
-            creator: req.user._id
+            creator: req.user._id,
+            status: req.body.status === null ? undefined : undefined
         }
         shipmentService.postShipment(data, req.user._id)
             .then(data => {

@@ -1,7 +1,6 @@
 const User = require('../../models/User')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const { security: { SALT_ROUNDS } } = require('../../config/environment')
+const { security: { SALT_ROUNDS , COOKIE_NAME} } = require('../../config/environment')
 const updateUser = async function ({ username, email, image, gender, oldPassword, newPassword }) {
 
     const data = await User.findOne({ username })
