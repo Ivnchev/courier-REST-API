@@ -7,7 +7,6 @@ router.get('/user',
     function (req, res, next) {
         authService.user(req)
             .then((data) => {
-                console.log(data);
                 res.status(200).json(data)
             })
             .catch(next)
@@ -21,10 +20,7 @@ router.post('/login',
                 res.cookie(COOKIE_NAME, data.token, { httpOnly: true, maxAge: new Date(Date.now() + 900000) })
                 res.status(200).json(data.user)
             })
-            .catch(err => {
-                console.log(err);
-                res.status(err.status).send(err.message)
-            })
+            .catch(next)
     })
 
 router.post('/register',
@@ -32,7 +28,7 @@ router.post('/register',
     function (req, res, next) {
 
         if (req.body.password !== req.body.rePassword) {
-            throw { message: 'Invalid username or password!', status: 204 }
+            throw { message: 'Invalid username or password!', status: 409, custom: true }
         }
 
         authService.register(req.body)
@@ -40,10 +36,7 @@ router.post('/register',
                 res.cookie(COOKIE_NAME, data.token, { httpOnly: true, maxAge: new Date(Date.now() + 900000) })
                 res.status(200).json(data.user)
             })
-            .catch(err => {
-                console.log(err);
-                res.status(err.status).send(err.message)
-            })
+            .catch(next)
     })
 
 router.post('/logout', function (req, res, next) {

@@ -44,7 +44,7 @@ router.route('/:id')
             .catch(next)
     })
     .delete(function (req, res, next) {
-        shipmentService.deleteShipment(req.params.id, req.user._id)
+        shipmentService.deleteShipment(req.params.id, req.user._id, req.user._role)
             .then(data => {
                 res.status(200).json(data)
             }).catch(next)

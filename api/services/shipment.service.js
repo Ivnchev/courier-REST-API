@@ -8,44 +8,52 @@ const getAll = async (isAdmin, userId) => {
     return await shipmentModel.find({ creator: userId }).populate({ path: 'creator', select: 'username' })
 }
 
-const getOne = async (id) => {
-    return await shipmentModel.findById(id)
-}
+const getOne = async (id) => await shipmentModel.findById(id)
 
 const postShipment = async (rowData, userId) => {
+    let shipment
+    let user
 
-    const data = await shipmentModel.create(rowData)
-
-    if (!data) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
-
-    const user = await userModel.findByIdAndUpdate({ _id: userId }, { $push: { shipments: data } }, { runValidators: true })
-
-    if (!user) throw { errors: [{ message: 'Invalid user!', status: 204 }] }
-
-    return data
+    try {
+        shipment = await shipmentModel.create(rowData)
+    } catch (err) {
+        throw err
+    }
+    try {
+        user = await userModel.findByIdAndUpdate({ _id: userId }, { $push: { shipments: data } }, { runValidators: true })
+    } catch (err) {
+        throw err
+    }
+    return shipment
 }
 
-const deleteShipment = async (id, userId) => {
+const deleteShipment = async (id, userId, role) => {
+    let shipment
+    let user
 
-    const user = await userModel.findByIdAndUpdate({ _id: userId }, { $pull: { shipments: id } }, { runValidators: true })
+    try {
+        shipment = await shipmentModel.findById(id).populate('creator')
+    } catch (err) {
+        throw err
+    }
 
-    if (!user) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
+    if ((shipment.creator._id.toString() !== userId) && role !== 'admin') throw { message: 'Invalid data!', status: 404 }
 
-    const data = await shipmentModel.findByIdAndRemove(id)
-
-    if (!data) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
-
-    return data
+    try {
+        user = await userModel.findByIdAndUpdate({ _id: claim.creator._id }, { $pull: { shipments: id } }, { runValidators: true })
+        await shipmentModel.findByIdAndRemove(id)
+    } catch (err) {
+        throw err
+    }
+    return shipment
 }
 
 const updateOne = async (id, formData) => {
-    
-    const data = await shipmentModel.findByIdAndUpdate({ _id: id }, formData, { runValidators: true })
-
-    if (!data) throw { errors: [{ message: 'Invalid data!', status: 204 }] }
-
-    return data
-
+    try {
+        return await shipmentModel.findByIdAndUpdate({ _id: id }, formData, { runValidators: true })
+    } catch (err) {
+        throw err
+    }
 }
 
 
