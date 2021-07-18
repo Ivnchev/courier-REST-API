@@ -5,6 +5,7 @@ const claimRouter = require('./controllers/claims')
 const shipmentRouter = require('./controllers/shipments')
 const newsRouter = require('./controllers/news')
 const questionRouter = require('./controllers/question')
+const supportRouter = require('./controllers/support')
 
 const guards = require('./guards/common')
 
@@ -16,6 +17,7 @@ module.exports.connect = function (path, app) {
     router.use('/claims', guards.isLogged, claimRouter)
     router.use('/shipments', guards.isLogged, shipmentRouter)
     router.use('/news', newsRouter)
+    router.use('/support', supportRouter)
     router.use('/question-and-answers', questionRouter)
 
     app.use(path, router)

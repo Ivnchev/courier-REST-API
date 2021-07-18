@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 
 
@@ -6,17 +5,17 @@ const schema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'Title is required!'],
-        minLength: [4, 'Title must be at least 4 characters !']
+        minLength: [5, 'Title must be at least 5 characters !']
     },
     description: {
         type: String,
         required: [true, 'Description is required!'],
         minLength: [10, 'Description must be at least 10 characters !']
     },
-    imageUrl: {
+    email: {
         type: String,
-        required: [true, 'Image is required!'],
-        match: [/^https?:\/\//, 'Image URL is incorrect!']
+        required: [true, 'Email is required!'],
+        match: [/^[A-Za-z0-9]+@\w+\.\w{2,3}$/g, 'Email should be a valid!']
     },
     showDetails: {
         type: Boolean,
@@ -24,4 +23,6 @@ const schema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('news', schema)
+
+
+module.exports = mongoose.model('support', schema)
