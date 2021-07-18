@@ -20,7 +20,7 @@ const postShipment = async (rowData, userId) => {
         throw err
     }
     try {
-        user = await userModel.findByIdAndUpdate({ _id: userId }, { $push: { shipments: data } }, { runValidators: true })
+        user = await userModel.findByIdAndUpdate({ _id: userId }, { $push: { shipments: shipment } }, { runValidators: true })
     } catch (err) {
         throw err
     }
@@ -40,7 +40,7 @@ const deleteShipment = async (id, userId, role) => {
     if ((shipment.creator._id.toString() !== userId) && role !== 'admin') throw { message: 'Invalid data!', status: 404 }
 
     try {
-        user = await userModel.findByIdAndUpdate({ _id: claim.creator._id }, { $pull: { shipments: id } }, { runValidators: true })
+        user = await userModel.findByIdAndUpdate({ _id: shipment.creator._id }, { $pull: { shipments: id } }, { runValidators: true })
         await shipmentModel.findByIdAndRemove(id)
     } catch (err) {
         throw err

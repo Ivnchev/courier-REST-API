@@ -24,7 +24,7 @@ const postClaim = async (rowData, userId) => {
         throw err
     }
     try {
-        user = await userModel.findByIdAndUpdate({ _id: userId }, { $push: { claims: data } }, { runValidators: true })
+        user = await userModel.findByIdAndUpdate({ _id: userId }, { $push: { claims: claim } }, { runValidators: true })
     } catch (err) {
         throw err
     }
