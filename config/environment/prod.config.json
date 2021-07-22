@@ -1,3 +1,21 @@
 {
-    
+    "production": true,
+    "server" : {
+        "PORT": 80,
+        "CORS": {
+            "urls": [ "http://localhost:4200", "https://courier-workshop.herokuapp.com/", "http://localhost" ],
+            "credentials": true,
+            "exposedHeaders": []
+        },
+        "baseUrl": "https://courier-workshop.herokuapp.com/"
+    },
+    "database": {
+        "DB_URI": "mongodb+srv://bebloy:admin1234@courier-workshop.uqoe2.mongodb.net/test?retryWrites=true&w=majority"
+    },
+    "security": {
+        "SECRET": "TOP_SECRET",
+        "COOKIE_NAME": "auth_cookie",
+        "HEADER": "x-auth",
+        "SALT_ROUNDS": 10
+    }
 }

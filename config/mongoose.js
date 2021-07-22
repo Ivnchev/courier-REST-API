@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { database: { DB_NAME, DB_URI } } = require('../config/environment')
+const { database: { DB_NAME, DB_URI }, production } = require('../config/environment')
 
 const options = {
     useNewUrlParser: true,
@@ -8,7 +8,11 @@ const options = {
     useFindAndModify: false
 }
 
-mongoose.connect(DB_URI + DB_NAME, options)
+if (production) {
+    mongoose.connect(DB_URI, options)
+} else {
+    mongoose.connect(DB_URI + DB_NAME, options)
+}
 
 const db = mongoose.connection
 

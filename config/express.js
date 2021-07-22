@@ -2,12 +2,12 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const { server: { CORS } } = require('../config/environment')
+const { server: { CORS }, production } = require('../config/environment')
 
 const auth = require('../api/middlewares/auth')
 
-function logger(req,res,next) {
-    console.log('>>>', 'METHOD: ' + req.method , 'PATH: ' + req.url);
+function logger(req, res, next) {
+    console.log('>>>', 'METHOD: ' + req.method, 'PATH: ' + req.url);
     next()
 }
 
@@ -26,5 +26,9 @@ module.exports = function (app) {
     app.use(auth)
 
     app.use(logger)
+
+    if (production) {
+        app.use(express.static(path.join(global._basedir, 'dist/courier-application')));
+    }
 
 }

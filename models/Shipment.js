@@ -19,7 +19,7 @@ const schema = new mongoose.Schema({
     size: {
         type: String,
         required: [true, 'Package size is required!'],
-        match: [/\d{2,3}\/\d{2,3}\/\d{2,3}/, 'Package size should looks like 120/80/40!'],
+        match: [/^\d{2,3}\/\d{2,3}\/\d{2,3}$/, 'Package size should looks like 120/80/40!'],
     },
     weight: {
         type: Number,
