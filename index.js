@@ -3,6 +3,7 @@ const path = require('path')
 const app = require('express')()
 const api = require('./api')
 const globalErrorHandler = require('./api/middlewares/globalErrorHandler')
+const counter = require('./api/services/counter.service')
 const { server: { PORT }, production } = require('./config/environment')
 
 require('./config/mongoose')
@@ -10,7 +11,7 @@ require('./config/express')(app)
 
 api.connect('/api/v1', app)
 
-app.use(globalErrorHandler)
+counter.start()
 
 app.listen(PORT, () => { console.log(production ? `Server is listening on: ${baseUrl}` : 'Server is listening on http://localhost:' + PORT); })
 
@@ -19,3 +20,5 @@ if (production) {
         res.sendFile(path.join(global._basedir, 'dist/courier-application/index.html'));
     });
 }
+
+app.use(globalErrorHandler)
