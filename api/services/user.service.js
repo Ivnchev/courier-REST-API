@@ -1,6 +1,17 @@
 const User = require('../../models/User')
 const bcrypt = require('bcrypt')
 const { security: { SALT_ROUNDS, COOKIE_NAME } } = require('../../config/environment')
+
+const getOne = async function (id) {
+    try {
+        const data = await User.findById(id).populate('shipments').populate('claims')
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+
 const updateUser = async function ({ username, email, image, gender, oldPassword, newPassword }) {
     try {
         const data = await User.findOne({ username })
@@ -34,5 +45,6 @@ const deleteUser = async function (id) {
 
 module.exports = {
     updateUser,
-    deleteUser
+    deleteUser,
+    getOne
 }

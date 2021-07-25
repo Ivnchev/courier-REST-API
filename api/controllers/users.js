@@ -8,7 +8,13 @@ router.route('/')
     .get(controllers.getAll)
 
 router.route('/:id')
-    .get(controllers.getOne)
+    .get(function (req, res, next) {
+        userService.geOne(req.params.id)
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(next)
+    })
     .put(function (req, res, next) {
         userService.updateUser(req.body)
             .then(data => {
