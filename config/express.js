@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const { server: { CORS }, production } = require('../config/environment')
-
+const path = require('path')
 const auth = require('../api/middlewares/auth')
 
 function logger(req, res, next) {
