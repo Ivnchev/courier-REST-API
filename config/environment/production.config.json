@@ -10,7 +10,7 @@
         "baseUrl": "https://courier-workshop.herokuapp.com/"
     },
     "database": {
-        "DB_URI": "mongodb+srv://bebloy:admin1234@courier-workshop.uqoe2.mongodb.net/test?retryWrites=true&w=majority"
+        "DB_URI": ""
     },
     "security": {
         "SECRET": "TOP_SECRET",
