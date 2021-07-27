@@ -9,7 +9,7 @@ router.route('/')
 
 router.route('/:id')
     .get(function (req, res, next) {
-        userService.geOne(req.params.id)
+        userService.getOne(req.params.id)
             .then(data => {
                 res.status(200).json(data)
             })
