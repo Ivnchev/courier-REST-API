@@ -16,10 +16,25 @@ const schema = new mongoose.Schema({
             message: '{VALUE} is incorrect!'
         }
     },
-    size: {
-        type: String,
-        required: [true, 'Package size is required!'],
-        match: [/^\d{2,3}\/\d{2,3}\/\d{2,3}$/, 'Package size should looks like 120/80/40!'],
+    sizes: {
+        length: {
+            type: Number,
+            required: [true, 'Length is required!'],
+            min: [5, 'Length must be at least 5 !'],
+            max: [200, 'Length should be less than 200 !']
+        },
+        width: {
+            type: Number,
+            required: [true, 'Width is required!'],
+            min: [5, 'Width must be at least 5 !'],
+            max: [200, 'Length should be less than 200 !']
+        },
+        height: {
+            type: Number,
+            required: [true, 'Height is required!'],
+            min: [5, 'Height must be at least 5 !'],
+            max: [200, 'Length should be less than 200 !']
+        }
     },
     weight: {
         type: Number,
