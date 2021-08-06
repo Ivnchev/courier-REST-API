@@ -41,7 +41,7 @@ const deleteClaim = async (id, userId, role) => {
         throw err
     }
 
-    if ((claim.creator._id.toString() !== userId) && role !== 'admin') throw { message: 'Invalid data!', status: 404 }
+    if ((claim.creator._id.toString() !== userId) && role !== 'admin') throw { message: 'Invalid data!', status: 404, custom: true }
 
     try {
         user = await userModel.findByIdAndUpdate({ _id: claim.creator._id }, { $pull: { claims: id } }, { runValidators: true })
@@ -51,14 +51,19 @@ const deleteClaim = async (id, userId, role) => {
     }
 }
 
-const updateOne = async (id, formData) => {
-
+const updateOne = async (id, userId, role, formData) => {
+    let claim
     try {
-        await claimModel.findByIdAndUpdate({ _id: id }, formData, { runValidators: true })
+        claim = await claimModel.findById(id).populate('creator')
     } catch (err) {
         throw err
     }
-
+    if ((claim.creator._id.toString() !== userId) && role !== 'admin') throw { message: 'Invalid data!', status: 404, custom: true }
+    try {
+        return await claimModel.findByIdAndUpdate({ _id: id }, formData, { runValidators: true })
+    } catch (err) {
+        throw err
+    }
 }
 
 

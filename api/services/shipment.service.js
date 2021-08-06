@@ -37,7 +37,8 @@ const deleteShipment = async (id, userId, role) => {
         throw err
     }
 
-    if ((shipment.creator._id.toString() !== userId) && role !== 'admin') throw { message: 'Invalid data!', status: 404 }
+    if ((shipment.creator._id.toString() !== userId) && (role !== 'admin')) throw { message: 'Invalid operation!', status: 404, custom: true }
+    if ((shipment.status !== 'created') && (role !== 'admin')) throw { message: 'Invalid operation!', status: 404, custom: true }
 
     try {
         user = await userModel.findByIdAndUpdate({ _id: shipment.creator._id }, { $pull: { shipments: id } }, { runValidators: true })
@@ -48,7 +49,16 @@ const deleteShipment = async (id, userId, role) => {
     return shipment
 }
 
-const updateOne = async (id, formData) => {
+const updateOne = async (id, formData, userId, role) => {
+    let shipment
+    try {
+        shipment = await shipmentModel.findById(id).populate('creator')
+    } catch (err) {
+        throw err
+    }
+    if ((shipment.creator._id.toString() !== userId) && (role !== 'admin')) throw { message: 'Invalid operation!', status: 404, custom: true }
+    if ((formData.status !== 'created') && (role !== 'admin')) throw { message: 'Invalid operation!', status: 404, custom: true }
+
     try {
         return await shipmentModel.findByIdAndUpdate({ _id: id }, formData, { runValidators: true })
     } catch (err) {

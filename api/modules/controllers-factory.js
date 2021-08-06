@@ -9,7 +9,7 @@ function controllers (model){
             }).catch(next)
     }
     function updateOne(req, res, next) {
-        model.findByIdAndUpdate(req.params.id, req.body)
+        model.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
             .then(data => {
                 res.json(data)
             })

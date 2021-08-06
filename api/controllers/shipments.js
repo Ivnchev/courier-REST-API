@@ -37,7 +37,7 @@ router.route('/:id')
             ...req.body,
             cost: req.body.shipmentType == 'economy' ? 20 : 40,
         }
-        shipmentService.updateOne(req.params.id, data)
+        shipmentService.updateOne(req.params.id, data, req.user._id, req.user.role)
             .then(data => {
                 res.json(data)
             })

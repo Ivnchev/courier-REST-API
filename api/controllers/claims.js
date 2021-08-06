@@ -21,26 +21,26 @@ router.route('/')
     })
 
 router.route('/:id')
-.get(function (req, res, next) {
-    claimService.getOne(req.params.id)
-        .then(data => {
-            res.json(data)
-        })
-        .catch(next)
-})
-.put(function (req, res, next) {
-    const data = { ...req.body }
-    claimService.updateOne(req.params.id, data)
-        .then(data => {
-            res.json(data)
-        })
-        .catch(next)
-})
-.delete(function (req, res, next) {
-    claimService.deleteClaim(req.params.id, req.user._id, req.user.role)
-        .then(data => {
-            res.status(200).json(data)
-        }).catch(next)
-})
+    .get(function (req, res, next) {
+        claimService.getOne(req.params.id)
+            .then(data => {
+                res.json(data)
+            })
+            .catch(next)
+    })
+    .put(function (req, res, next) {
+        const data = { ...req.body }
+        claimService.updateOne(req.params.id, req.user._id, req.user.role, data)
+            .then(data => {
+                res.json(data)
+            })
+            .catch(next)
+    })
+    .delete(function (req, res, next) {
+        claimService.deleteClaim(req.params.id, req.user._id, req.user.role)
+            .then(data => {
+                res.status(200).json(data)
+            }).catch(next)
+    })
 
 module.exports = router

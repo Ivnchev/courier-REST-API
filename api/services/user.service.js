@@ -17,7 +17,7 @@ const updateUser = async function ({ username, email, image, gender, oldPassword
         const data = await User.findOne({ username })
 
         const isCorrectPassword = await data.comparePasswords(oldPassword)
-        if (!isCorrectPassword) throw { message: 'Incorrect passwords!', status: 404 }
+        if (!isCorrectPassword) throw { message: 'Incorrect passwords!', status: 404, custom: true }
         const hash = await bcrypt.genSalt(SALT_ROUNDS)
             .then(salt => bcrypt.hash(newPassword, salt))
             .then(hash => hash)
